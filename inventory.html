@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockPro - Inventory Management System</title>
+    <link rel="stylesheet" href="inventory.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header class="navbar">
+
+            <div class="logo">
+                StockPro
+            </div>
+            
+<div class="nav-search">
+    <input
+        type="search"
+        id="search"
+        placeholder="Search products..."
+        oninput="searchProduct()"
+    >
+    <span>🔍</span>
+</div>
+
+            <nav class="nav-links">
+
+                <button onclick="showHome()">
+                    Home
+                </button>
+                <button onclick="showAbout()">About Us</button>
+
+                <button onclick="showAddProduct()">
+                    Add Product
+                </button>
+
+                <button onclick="showProducts()">
+                    Products
+                </button>
+
+                <button onclick="showSell()">
+                    Sales
+                </button>
+
+                <button onclick="showSalesHistory()">
+                    Sales History
+                </button>
+                <button onclick="showSalesReport()">
+    Sales Report
+</button>
+
+            </nav>
+
+        </header>
+        <div id="searchResult" class="search-result">
+    
+</div>
+
+        <div class="dashboard">
+
+            <div class="hero-section">
+
+                <div class="hero-content">
+
+                    <p class="hero-small">
+                        INVENTORY MANAGEMENT
+                    </p>
+
+                    <h1>
+                        Welcome to StockPro 👋
+                    </h1>
+
+                    <p>
+                        Manage your products, stock and sales
+                        easily in one place.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="card1">
+
+                <h3>
+                    Total Product Sales
+                </h3>
+
+                <p id="totalSales">
+                    0
+                </p>
+
+            </div>
+
+            <div class="card2">
+
+                <h3>
+                    Total Sales Amount
+                </h3>
+
+                <p id="totalSalesAmount">
+                    ₹0
+                </p>
+
+            </div>
+
+            <div class="card3">
+
+                <h3>
+                    Total Products
+                </h3>
+
+                <p id="totalProducts">
+                    0
+                </p>
+
+            </div>
+
+            <div class="card4">
+
+                <h3>
+                    Total Stock
+                </h3>
+
+                <p id="totalstock">
+                    0
+                </p>
+
+            </div>
+
+            <div class="card5">
+
+                <h3>
+                    Low Stock
+                </h3>
+
+                <p id="lowstock">
+                    0
+                </p>
+
+            </div>
+        
+<!-- Dashboard Charts -->
+<section class="charts-section">
+
+    <h2>Dashboard Analytics</h2>
+
+    <div class="charts-container">
+
+        <!-- Sales Chart -->
+        <div class="chart-card">
+            <h3>Sales Overview</h3>
+
+            <canvas id="salesChart"></canvas>
+        </div>
+
+        <!-- Stock Chart -->
+        <div class="chart-card">
+            <h3>Stock Overview</h3>
+
+            <canvas id="stockChart"></canvas>
+        </div>
+
+    </div>
+
+</section>
+
+
+        </div>
+
+       <div class="search-section">
+
+            <div class="search">
+
+             
+
+            </div>
+
+        </div>
+
+        <div class="subdashboard">
+
+            <div
+                class="card6"
+                onclick="showLowStock()"
+            >
+
+                <h3>
+                    ⚠️ Low Stock Products
+                </h3>
+
+                <p id="lowStockCount">
+                    0
+                </p>
+
+            </div>
+
+            <div
+                class="card7"
+                onclick="showOutOfStock()"
+            >
+
+                <h3>
+                    🚫 Out of Stock Products
+                </h3>
+
+                <p id="outofstock">
+                    0
+                </p>
+
+            </div>
+
+            <div
+                class="card8"
+                onclick="showRecentSales()"
+            >
+
+                <h3>
+                    🕐 Recent Sales
+                </h3>
+
+                <p id="recentSalesCount">
+                    0
+                </p>
+
+            </div>
+
+        </div>
+
+        <div
+            id="subResult"
+            class="sub-result"
+        ></div>
+
+        <div class="form-section">
+
+            <h1>
+                Add Product
+            </h1>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Product Name"
+                required
+            >
+
+            <input
+                type="text"
+                id="category"
+                placeholder="Category"
+                required
+            >
+
+            <input
+                type="number"
+                id="price"
+                placeholder="Price"
+                required
+            >
+
+            <input
+                type="number"
+                id="quantity"
+                placeholder="Quantity"
+                required
+            >
+
+            <div class="form-buttons">
+
+                <button
+                    id="addButton"
+                    onclick="addButton()"
+                >
+                    Add Product
+                </button>
+
+                <button
+                    onclick="updateProduct()"
+                >
+                    Update
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="table-section">
+
+            <h2>
+                Product Table
+            </h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>S.No</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablesection"></tbody>
+
+            </table>
+
+        </div>
+
+        <div class="sales-section">
+
+            <h2>
+                Sales
+            </h2>
+
+            <p id="availableStock"></p>
+
+            <select
+                id="saleProduct"
+                onchange="showAvailableStock()"
+            >
+
+                <option value="">
+                    Select Product
+                </option>
+
+            </select>
+
+            <input
+                type="number"
+                id="saleQuantity"
+                placeholder="Quantity Sold"
+            >
+
+            <button onclick="sellProduct()">
+                Sale
+            </button>
+
+        </div>
+
+        <div class="sales-history">
+
+            <h2>
+                Sales History
+            </h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>S.No</th>
+                        <th>Product</th>
+                        <th>Quantity Sold</th>
+                        <th>Price</th>
+                        <th>Total Amount</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="salesTable"></tbody>
+
+            </table>
+
+        </div>
+        <!-- Sales Report Section -->
+<section class="sales-report" style="display: none;">
+
+    <h2>Sales Report</h2>
+
+    <label for="reportPeriod">Select Period:</label>
+
+    <select id="reportPeriod" onchange="generateSalesReport()">
+        <option value="today">Today</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+        <option value="all">All Time</option>
+    </select>
+
+    <div class="report-cards">
+
+        <div class="report-card">
+            <h3>Total Sales</h3>
+            <p id="reportAmount">₹0</p>
+        </div>
+
+        <div class="report-card">
+            <h3>Transactions</h3>
+            <p id="reportTransactions">0</p>
+        </div>
+
+        <div class="report-card">
+            <h3>Items Sold</h3>
+            <p id="reportItems">0</p>
+        </div>
+
+    </div>
+
+    <h3>Sales Details</h3>
+
+    <div class="report-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody id="reportTable">
+            </tbody>
+        </table>
+    </div>
+
+    <button onclick="exportSalesReport()">
+        Export CSV
+    </button>
+
+</section>
+
+        <footer class="footer" id="footer">
+
+            <div class="footer-container">
+
+                <div class="footer-box">
+
+                    <h2>
+                        StockPro
+                    </h2>
+
+                    <p>
+                        StockPro is a simple inventory
+                        management tool to track products,
+                        stock levels and sales in one place.
+                    </p>
+
+                    <p>
+                        Your data stays safely in
+                        your own browser.
+                    </p>
+
+                </div>
+
+                <div class="footer-box">
+
+                    <h3>
+                        Contact
+                    </h3>
+
+                    <p>
+                        📧 productsmanagement@gmail.com
+                    </p>
+
+                    <p>
+                        📞 +9043504129
+                    </p>
+
+                    <p>
+                        📍 Chittoor, Andhra Pradesh
+                    </p>
+
+                </div>
+
+                <div class="footer-box">
+
+                    <h3>
+                        Support
+                    </h3>
+
+                    <p>
+                        🛠️ productsmanagement@gamail.com
+                    </p>
+
+                    <p>
+                        🕘 Mon–Sat, 9 AM – 6 PM
+                    </p>
+
+                    <p>
+                        Help Center
+                    </p>
+
+                    <p>
+                        System Status
+                    </p>
+
+                </div>
+
+                <div class="footer-box">
+
+                    <h3>
+                        FAQ
+                    </h3>
+
+                    <p>
+                        <b>
+                            Product ela add cheyali?
+                        </b>
+                        <br>
+                        Top menu lo "Add Product" click cheyandi.
+                    </p>
+
+                    <p>
+                        <b>
+                            Low stock ante?
+                        </b>
+                        <br>
+                        Quantity 10 kanna takkuva unte.
+                    </p>
+
+                    <p>
+                        <b>
+                            Data ekkada save avtundi?
+                        </b>
+                        <br>
+                        Mee browser lo localStorage lo save avtundi.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="footer-info">
+
+                <div>
+
+                    <h3>
+                        Privacy Policy
+                    </h3>
+
+                    <p>
+                   Privacy Policy: StockPro securely stores inventory and sales information locally in the user's browser. We do not collect, share, or sell personal or inventory data to third parties.
+
+                    </p>
+
+                    <p>
+                        Clearing browser data will
+                        remove your inventory records.
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Terms of Use
+                    </h3>
+
+                    <p>
+                        This application is provided
+                        as-is for personal and small
+                        business use.
+                    </p>
+
+                    <p>
+                        Please keep a backup of
+                        important records.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 StockPro.
+                    All rights reserved.
+                </p>
+
+                <a href="#top">
+                    Back to top ↑
+                </a>
+
+            </div>
+
+        </footer>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="inventory.js"></script>
+
+</body>
+
+</html>
